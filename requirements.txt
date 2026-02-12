@@ -1,0 +1,16 @@
+# AADS Series Manager - Required Packages
+
+# Core functionality - no packages required (uses Python standard library)
+
+# Optional: For Supabase cloud backup
+supabase>=2.0.0
+
+# Optional: For loading .env file
+python-dotenv>=1.0.0
+
+# To install all optional packages:
+# pip install -r requirements.txt
+
+# To install only Supabase support:
+# pip install supabase python-dotenv
+

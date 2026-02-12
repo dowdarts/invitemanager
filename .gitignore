@@ -1,0 +1,44 @@
+# AADS Series Manager - Git Ignore File
+# Prevents sensitive data from being committed to version control
+
+# Environment variables (contains Supabase credentials)
+.env
+
+# Database files
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual environments
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+
+# Backups
+*.bak
+*.backup
