@@ -1,6 +1,6 @@
-# 💪 AADS Invite Manager
+# 🎯 AADS Invite Manager
 
-**Atlantic Armwrestling Development Series Management System**
+**Atlantic Amateur Darts Series Management System**
 
 ## 🌐 **[LAUNCH WEB APP](https://dowdarts.github.io/invitemanager/)** 🌐
 

@@ -21,7 +21,7 @@ function initializeApp() {
     
     // Initialize demo data if first time
     if (!localStorage.getItem('aads_initialized')) {
-        initializeDemo Data();
+        initializeDemoData();
         localStorage.setItem('aads_initialized', 'true');
     }
 }
@@ -318,6 +318,49 @@ function initializeDemoData() {
     });
     
     saveLocalData();
+}
+
+// Find invite candidates based on TOC eligibility
+function loadInviteCandidates() {
+    const candidates = players.filter(p => {
+        // Eligible if participated in 1-2 events (not TOC qualified yet)
+        return p.total_events > 0 && p.total_events < 3 && !p.toc_qualified;
+    }).sort((a, b) => b.total_events - a.total_events);
+    
+    const modal = document.createElement('div');
+    modal.className = 'modal active';
+    modal.innerHTML = `
+        <div class="modal-content">
+            <h2>🎯 Invite Candidates</h2>
+            <p>Players eligible for upcoming invitations (1-2 events, not TOC qualified)</p>
+            ${candidates.length > 0 ? `
+                <table style="margin-top: 20px;">
+                    <thead>
+                        <tr>
+                            <th>Player</th>
+                            <th>Province</th>
+                            <th>Events</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${candidates.map(p => `
+                            <tr>
+                                <td>${p.name}</td>
+                                <td>${p.province}</td>
+                                <td>${p.total_events}</td>
+                                <td>${p.status}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            ` : '<p>No candidates found. Players need 1-2 event participations.</p>'}
+            <div style="margin-top: 20px; text-align: right;">
+                <button class="btn btn-secondary" onclick="this.closest('.modal').remove()">Close</button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(modal);
 }
 
 // Dashboard Functions
