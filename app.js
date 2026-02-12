@@ -603,6 +603,7 @@ function loadEventRoster() {
                                 <td>${player.province}</td>
                                 <td><span class="badge badge-${ep.is_debut ? 'debut' : 'veteran'}">${ep.is_debut ? 'DEBUT' : 'VETERAN'}</span></td>
                                 <td>
+                                    <button class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.85rem; margin-right: 5px;" onclick="showEditPlayerModal(${player.id})">✏️ Edit</button>
                                     <button class="btn btn-danger" style="padding: 6px 12px; font-size: 0.85rem;" onclick="removeFromRoster(${eventId}, ${player.id})">Remove</button>
                                 </td>
                             </tr>
@@ -671,7 +672,8 @@ function filterRosterCandidates() {
                         <td>${player.province}</td>
                         <td>${player.total_events}</td>
                         <td>
-                            <button class="btn btn-success" style="padding: 6px 12px; font-size: 0.85rem;" onclick="addToRoster(${eventId}, ${player.id})">Add</button>
+                            <button class="btn btn-success" style="padding: 6px 12px; font-size: 0.85rem; margin-right: 5px;" onclick="addToRoster(${eventId}, ${player.id})">Add</button>
+                            <button class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.85rem;" onclick="showEditPlayerModal(${player.id})">✏️ Edit</button>
                         </td>
                     </tr>
                 `).join('')}
