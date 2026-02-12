@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AADS Invite Manager - Atlantic Armwrestling Development Series</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💪</text></svg>">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>💪 AADS Invite Manager</h1>
+            <p class="subtitle">Atlantic Armwrestling Development Series</p>
+            <div id="sync-status" class="sync-status"></div>
+        </header>
+
+        <nav class="tabs">
+            <button class="tab-btn active" data-tab="dashboard">📊 Dashboard</button>
+            <button class="tab-btn" data-tab="players">👥 Players</button>
+            <button class="tab-btn" data-tab="events">🏆 Events</button>
+            <button class="tab-btn" data-tab="roster">📋 Roster</button>
+            <button class="tab-btn" data-tab="settings">⚙️ Settings</button>
+        </nav>
+
+        <main id="main-content">
+            <!-- Dashboard Tab -->
+            <div id="dashboard-tab" class="tab-content active">
+                <div class="dashboard-grid">
+                    <div class="card stat-card">
+                        <h3>Total Players</h3>
+                        <p class="stat-number" id="total-players">0</p>
+                        <p class="stat-label">Registered Athletes</p>
+                    </div>
+                    <div class="card stat-card">
+                        <h3>Completed Events</h3>
+                        <p class="stat-number" id="completed-events">0</p>
+                        <p class="stat-label">Out of 7 Total</p>
+                    </div>
+                    <div class="card stat-card">
+                        <h3>TOC Qualified</h3>
+                        <p class="stat-number" id="toc-qualified">0</p>
+                        <p class="stat-label">Tournament of Champions</p>
+                    </div>
+                    <div class="card stat-card">
+                        <h3>Prospects</h3>
+                        <p class="stat-number" id="prospects-count">0</p>
+                        <p class="stat-label">Never Competed</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2>📅 Series Progress</h2>
+                    <div id="events-summary"></div>
+                </div>
+
+                <div class="card">
+                    <h2>🎯 Quick Actions</h2>
+                    <div class="quick-actions">
+                        <button class="btn btn-primary" onclick="showTab('players')">View All Players</button>
+                        <button class="btn btn-primary" onclick="showTab('events')">Manage Events</button>
+                        <button class="btn btn-primary" onclick="loadInviteCandidates()">Find Invite Candidates</button>
+                        <button class="btn btn-success" onclick="syncToCloud()">☁️ Sync to Cloud</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Players Tab -->
+            <div id="players-tab" class="tab-content">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>👥 Master Player List</h2>
+                        <button class="btn btn-primary" onclick="showAddPlayerModal()">➕ Add Player</button>
+                    </div>
+                    
+                    <div class="filters">
+                        <select id="province-filter" onchange="filterPlayers()">
+                            <option value="all">All Provinces</option>
+                            <option value="NB">New Brunswick (NB)</option>
+                            <option value="NS">Nova Scotia (NS)</option>
+                            <option value="PEI">Prince Edward Island (PEI)</option>
+                        </select>
+                        
+                        <select id="status-filter" onchange="filterPlayers()">
+                            <option value="all">All Statuses</option>
+                            <option value="Prospect">Prospects</option>
+                            <option value="Active">Active</option>
+                            <option value="Winner">Winners</option>
+                            <option value="TOC Qualified">TOC Qualified</option>
+                        </select>
+                        
+                        <input type="text" id="search-players" placeholder="🔍 Search players..." onkeyup="filterPlayers()">
+                    </div>
+                    
+                    <div id="players-list" class="table-container"></div>
+                </div>
+            </div>
+
+            <!-- Events Tab -->
+            <div id="events-tab" class="tab-content">
+                <div class="card">
+                    <h2>🏆 Event Management</h2>
+                    <div id="events-list"></div>
+                </div>
+            </div>
+
+            <!-- Roster Tab -->
+            <div id="roster-tab" class="tab-content">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>📋 Event Roster Builder</h2>
+                        <select id="roster-event-select" onchange="loadEventRoster()">
+                            <option value="">Select Event...</option>
+                        </select>
+                    </div>
+                    <div id="roster-content"></div>
+                </div>
+            </div>
+
+            <!-- Settings Tab -->
+            <div id="settings-tab" class="tab-content">
+                <div class="card">
+                    <h2>⚙️ Settings</h2>
+                    
+                    <div class="settings-section">
+                        <h3>☁️ Supabase Cloud Sync</h3>
+                        <p>Configure your Supabase connection for cloud backup and sync.</p>
+                        
+                        <div class="form-group">
+                            <label for="supabase-url">Supabase URL:</label>
+                            <input type="text" id="supabase-url" placeholder="https://your-project.supabase.co">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="supabase-key">Supabase Anon Key:</label>
+                            <input type="password" id="supabase-key" placeholder="Your Supabase anon public key">
+                            <small>Your credentials are stored securely in your browser (localStorage)</small>
+                        </div>
+                        
+                        <div class="button-group">
+                            <button class="btn btn-primary" onclick="saveSupabaseConfig()">💾 Save Configuration</button>
+                            <button class="btn btn-secondary" onclick="testSupabaseConnection()">🔌 Test Connection</button>
+                            <button class="btn btn-success" onclick="initializeSupabaseTables()">🚀 Initialize Tables</button>
+                        </div>
+                    </div>
+
+                    <div class="settings-section">
+                        <h3>📊 Data Management</h3>
+                        <div class="button-group">
+                            <button class="btn btn-success" onclick="syncToCloud()">⬆️ Push to Cloud</button>
+                            <button class="btn btn-warning" onclick="pullFromCloud()">⬇️ Pull from Cloud</button>
+                            <button class="btn btn-secondary" onclick="exportData()">📥 Export Data (JSON)</button>
+                            <button class="btn btn-secondary" onclick="importData()">📤 Import Data (JSON)</button>
+                        </div>
+                    </div>
+
+                    <div class="settings-section">
+                        <h3>ℹ️ About</h3>
+                        <p><strong>AADS Invite Manager</strong></p>
+                        <p>Version 2.0 - Web Edition</p>
+                        <p>Atlantic Armwrestling Development Series Tournament Management System</p>
+                        <p>Built with ❤️ for the armwrestling community</p>
+                        <p><a href="https://github.com/dowdarts/invitemanager" target="_blank">View on GitHub</a></p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal for adding/editing players -->
+    <div id="player-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('player-modal')">&times;</span>
+            <h2 id="player-modal-title">Add New Player</h2>
+            <form id="player-form" onsubmit="savePlayer(event)">
+                <div class="form-group">
+                    <label for="player-name">Player Name:</label>
+                    <input type="text" id="player-name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="player-province">Province:</label>
+                    <select id="player-province" required>
+                        <option value="">Select Province</option>
+                        <option value="NB">New Brunswick (NB)</option>
+                        <option value="NS">Nova Scotia (NS)</option>
+                        <option value="PEI">Prince Edward Island (PEI)</option>
+                    </select>
+                </div>
+                
+                <div class="button-group">
+                    <button type="submit" class="btn btn-primary">💾 Save Player</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('player-modal')">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="toast"></div>
+
+    <!-- Load Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <!-- Load Application JavaScript -->
+    <script src="app.js"></script>
+</body>
+</html>
