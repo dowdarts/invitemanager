@@ -235,21 +235,44 @@ function initializeDemoData() {
         { id: 7, name: 'Event 7 - Tournament of Champions', event_type: 'TOC', status: 'Pending', winner_id: null }
     ];
     
-    // Add sample players
-    const samplePlayers = [
+    // Complete player roster with all participants from Events 1-5
+    const allPlayers = [
+        // New Brunswick (NB)
         { name: 'Cory Wallace', province: 'NB' },
-        { name: 'Steve Rushton', province: 'NS' },
         { name: 'Dee Cormier', province: 'NB' },
         { name: 'Royce Milliea', province: 'NB' },
         { name: 'Miguel Velasquez', province: 'NB' },
         { name: 'Gerry Johnston', province: 'NB' },
         { name: 'Tyler Stewart', province: 'NB' },
-        { name: 'Tom Holden', province: 'NS' },
         { name: 'Denis Leblanc', province: 'NB' },
-        { name: 'Micheal Léger', province: 'NB' }
+        { name: 'Micheal Léger', province: 'NB' },
+        { name: 'Kyle Gray', province: 'NB' },
+        { name: 'Tyler Cyr', province: 'NB' },
+        { name: 'Pitou Pellerin', province: 'NB' },
+        { name: 'Wayne Chapman', province: 'NB' },
+        { name: 'Don Higgins', province: 'NB' },
+        { name: 'Zack Davis', province: 'NB' },
+        { name: 'Dana Moss', province: 'NB' },
+        { name: 'Chad Arsenault', province: 'NB' },
+        { name: 'Tony Solomon', province: 'NB' },
+        // Nova Scotia (NS)
+        { name: 'Steve Rushton', province: 'NS' },
+        { name: 'Tom Holden', province: 'NS' },
+        { name: 'Corey O\'Brien', province: 'NS' },
+        { name: 'Drake Berry', province: 'NS' },
+        { name: 'Jon Casey', province: 'NS' },
+        { name: 'Jordan Boyd', province: 'NS' },
+        { name: 'Colby Burke', province: 'NS' },
+        { name: 'Arron Gilbert', province: 'NS' },
+        { name: 'Scott Ferdinand', province: 'NS' },
+        // Prince Edward Island (PEI)
+        { name: 'Ricky Chaisson', province: 'PEI' },
+        { name: 'Mark MacEachern', province: 'PEI' },
+        { name: 'Kevin Blanchard', province: 'PEI' },
+        { name: 'Corey Lefort', province: 'PEI' }
     ];
     
-    players = samplePlayers.map((p, index) => ({
+    players = allPlayers.map((p, index) => ({
         id: index + 1,
         ...p,
         status: 'Prospect',
@@ -258,7 +281,41 @@ function initializeDemoData() {
         created_at: new Date().toISOString()
     }));
     
+    // Event participation data
+    const eventRosters = {
+        1: ['Cory Wallace', 'Dee Cormier', 'Royce Milliea', 'Miguel Velasquez', 'Gerry Johnston', 'Tyler Stewart', 'Denis Leblanc', 'Micheal Léger', 'Steve Rushton', 'Tom Holden'],
+        2: ['Dee Cormier', 'Denis Leblanc', 'Kyle Gray', 'Tyler Cyr', 'Tyler Stewart', 'Micheal Léger', 'Pitou Pellerin', 'Tom Holden', 'Corey O\'Brien', 'Steve Rushton'],
+        3: ['Tyler Cyr', 'Kyle Gray', 'Wayne Chapman', 'Don Higgins', 'Pitou Pellerin', 'Zack Davis', 'Drake Berry', 'Jon Casey', 'Ricky Chaisson', 'Mark MacEachern'],
+        4: ['Don Higgins', 'Wayne Chapman', 'Dana Moss', 'Cory Wallace', 'Dee Cormier', 'Jordan Boyd', 'Drake Berry', 'Colby Burke', 'Kevin Blanchard', 'Mark MacEachern'],
+        5: ['Chad Arsenault', 'Denis Leblanc', 'Tony Solomon', 'Arron Gilbert', 'Corey O\'Brien', 'Steve Rushton', 'Jon Casey', 'Scott Ferdinand', 'Corey Lefort', 'Ricky Chaisson']
+    };
+    
+    // Create event participants and update player stats
+    let participantId = 1;
     eventParticipants = [];
+    
+    Object.keys(eventRosters).forEach(eventId => {
+        eventRosters[eventId].forEach(playerName => {
+            const player = players.find(p => p.name === playerName);
+            if (player) {
+                // Determine if debut or veteran
+                const isDebut = player.total_events === 0;
+                
+                eventParticipants.push({
+                    id: participantId++,
+                    event_id: parseInt(eventId),
+                    player_id: player.id,
+                    is_debut: isDebut,
+                    is_veteran: !isDebut,
+                    added_at: new Date().toISOString()
+                });
+                
+                // Update player stats
+                player.total_events++;
+                player.status = 'Active';
+            }
+        });
+    });
     
     saveLocalData();
 }
