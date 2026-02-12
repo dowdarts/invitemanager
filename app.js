@@ -761,29 +761,6 @@ function setEventWinner(eventId) {
     showToast(`🏆 ${winner.name} is the winner! Auto-qualified for TOC!`, 'success');
 }
 
-function loadInviteCandidates() {
-    // Find most recent completed event
-    const recentEvent = events.filter(e => e.status === 'Completed').pop();
-    if (!recentEvent) {
-        showToast('No completed events yet', 'warning');
-        return;
-    }
-    
-    const recentParticipants = eventParticipants.filter(ep => ep.event_id === recentEvent.id);
-    const candidates = players.filter(p => 
-        p.total_events > 0 && !recentParticipants.some(ep => ep.player_id === p.id)
-    );
-    
-    showTab('players');
-    setTimeout(() => {
-        document.getElementById('search-players').value = '';
-        document.getElementById('province-filter').value = 'all';
-        document.getElementById('status-filter').value = 'all';
-        displayPlayers(candidates);
-        showToast(`Showing ${candidates.length} invite candidates (not in ${recentEvent.name})`, 'success');
-    }, 100);
-}
-
 // Cloud Sync Functions
 async function syncToCloud() {
     if (!supabase) {
