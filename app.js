@@ -1,7 +1,7 @@
 // AADS Invite Manager - Application Logic
 
 // Global state
-let supabase = null;
+let supabaseClient = null;
 let players = [];
 let events = [];
 let eventParticipants = [];
@@ -101,7 +101,7 @@ function saveSupabaseConfig() {
 
 function initializeSupabase(url, key) {
     try {
-        supabase = window.supabase.createClient(url, key);
+        supabaseClient = window.supabase.createClient(url, key);
         updateSyncStatus('Connected to Supabase', true);
         console.log('Supabase initialized');
     } catch (error) {
@@ -111,13 +111,13 @@ function initializeSupabase(url, key) {
 }
 
 async function testSupabaseConnection() {
-    if (!supabase) {
+    if (!supabaseClient) {
         showToast('Please configure Supabase first', 'warning');
         return;
     }
     
     try {
-        const { data, error } = await supabase.from('players').select('count', { count: 'exact', head: true });
+        const { data, error } = await supabaseClient.from('players').select('count', { count: 'exact', head: true });
         
         if (error) throw error;
         
@@ -763,7 +763,7 @@ function setEventWinner(eventId) {
 
 // Cloud Sync Functions
 async function syncToCloud() {
-    if (!supabase) {
+    if (!supabaseClient) {
         showToast('Please configure Supabase first', 'warning');
         showTab('settings');
         return;
@@ -778,17 +778,17 @@ async function syncToCloud() {
         
         // Sync players
         for (const player of players) {
-            await supabase.from('players').upsert(player);
+            await supabaseClient.from('players').upsert(player);
         }
         
         // Sync events
         for (const event of events) {
-            await supabase.from('events').upsert(event);
+            await supabaseClient.from('events').upsert(event);
         }
         
         // Sync participants
         for (const ep of eventParticipants) {
-            await supabase.from('event_participants').upsert(ep);
+            await supabaseClient.from('event_participants').upsert(ep);
         }
         
         showToast('✓ Successfully synced to cloud!', 'success');
@@ -800,7 +800,7 @@ async function syncToCloud() {
 }
 
 async function pullFromCloud() {
-    if (!supabase) {
+    if (!supabaseClient) {
         showToast('Please configure Supabase first', 'warning');
         showTab('settings');
         return;
@@ -814,15 +814,15 @@ async function pullFromCloud() {
         showToast('Pulling from cloud...', 'success');
         
         // Pull players
-        const { data: cloudPlayers } = await supabase.from('players').select('*');
+        const { data: cloudPlayers } = await supabaseClient.from('players').select('*');
         if (cloudPlayers) players = cloudPlayers;
         
         // Pull events
-        const { data: cloudEvents } = await supabase.from('events').select('*');
+        const { data: cloudEvents } = await supabaseClient.from('events').select('*');
         if (cloudEvents) events = cloudEvents;
         
         // Pull participants
-        const { data: cloudParticipants } = await supabase.from('event_participants').select('*');
+        const { data: cloudParticipants } = await supabaseClient.from('event_participants').select('*');
         if (cloudParticipants) eventParticipants = cloudParticipants;
         
         saveLocalData();
