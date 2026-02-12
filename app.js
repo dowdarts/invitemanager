@@ -473,6 +473,18 @@ function displayPlayers(playersList) {
 function showAddPlayerModal() {
     document.getElementById('player-modal-title').textContent = 'Add New Player';
     document.getElementById('player-form').reset();
+    document.getElementById('player-form').dataset.editId = '';
+    document.getElementById('player-modal').style.display = 'block';
+}
+
+function showEditPlayerModal(playerId) {
+    const player = players.find(p => p.id === playerId);
+    if (!player) return;
+    
+    document.getElementById('player-modal-title').textContent = 'Edit Player';
+    document.getElementById('player-name').value = player.name;
+    document.getElementById('player-province').value = player.province;
+    document.getElementById('player-form').dataset.editId = playerId;
     document.getElementById('player-modal').style.display = 'block';
 }
 
@@ -481,34 +493,58 @@ function savePlayer(event) {
     
     const name = document.getElementById('player-name').value.trim();
     const province = document.getElementById('player-province').value;
+    const editId = document.getElementById('player-form').dataset.editId;
     
     if (!name || !province) {
         showToast('Please fill all fields', 'error');
         return;
     }
     
-    // Check for duplicate
-    if (players.some(p => p.name.toLowerCase() === name.toLowerCase())) {
-        showToast('Player already exists', 'error');
-        return;
+    if (editId) {
+        // Edit existing player
+        const player = players.find(p => p.id === parseInt(editId));
+        if (player) {
+            // Check for duplicate name (excluding current player)
+            if (players.some(p => p.id !== parseInt(editId) && p.name.toLowerCase() === name.toLowerCase())) {
+                showToast('Another player with this name already exists', 'error');
+                return;
+            }
+            
+            player.name = name;
+            player.province = province;
+            
+            saveLocalData();
+            closeModal('player-modal');
+            loadPlayers();
+            loadEventRoster();
+            updateDashboard();
+            showToast(`✓ ${name} updated successfully!`, 'success');
+        }
+    } else {
+        // Add new player
+        // Check for duplicate
+        if (players.some(p => p.name.toLowerCase() === name.toLowerCase())) {
+            showToast('Player already exists', 'error');
+            return;
+        }
+        
+        const newPlayer = {
+            id: Math.max(0, ...players.map(p => p.id)) + 1,
+            name,
+            province,
+            status: 'Prospect',
+            total_events: 0,
+            toc_qualified: false,
+            created_at: new Date().toISOString()
+        };
+        
+        players.push(newPlayer);
+        saveLocalData();
+        closeModal('player-modal');
+        loadPlayers();
+        updateDashboard();
+        showToast(`✓ ${name} added successfully!`, 'success');
     }
-    
-    const newPlayer = {
-        id: Math.max(0, ...players.map(p => p.id)) + 1,
-        name,
-        province,
-        status: 'Prospect',
-        total_events: 0,
-        toc_qualified: false,
-        created_at: new Date().toISOString()
-    };
-    
-    players.push(newPlayer);
-    saveLocalData();
-    closeModal('player-modal');
-    loadPlayers();
-    updateDashboard();
-    showToast(`✓ ${name} added successfully!`, 'success');
 }
 
 function viewPlayerHistory(playerId) {

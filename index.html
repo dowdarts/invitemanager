@@ -127,22 +127,24 @@
                         <h3>☁️ Supabase Cloud Sync</h3>
                         <p>Configure your Supabase connection for cloud backup and sync.</p>
                         
-                        <div class="form-group">
-                            <label for="supabase-url">Supabase URL:</label>
-                            <input type="text" id="supabase-url" placeholder="https://your-project.supabase.co">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="supabase-key">Supabase Anon Key:</label>
-                            <input type="password" id="supabase-key" placeholder="Your Supabase anon public key">
-                            <small>Your credentials are stored securely in your browser (localStorage)</small>
-                        </div>
-                        
-                        <div class="button-group">
-                            <button class="btn btn-primary" onclick="saveSupabaseConfig()">💾 Save Configuration</button>
-                            <button class="btn btn-secondary" onclick="testSupabaseConnection()">🔌 Test Connection</button>
-                            <button class="btn btn-success" onclick="initializeSupabaseTables()">🚀 Initialize Tables</button>
-                        </div>
+                        <form onsubmit="event.preventDefault(); saveSupabaseConfig();">
+                            <div class="form-group">
+                                <label for="supabase-url">Supabase URL:</label>
+                                <input type="text" id="supabase-url" placeholder="https://your-project.supabase.co">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="supabase-key">Supabase Anon Key:</label>
+                                <input type="password" id="supabase-key" placeholder="Your Supabase anon public key">
+                                <small>Your credentials are stored securely in your browser (localStorage)</small>
+                            </div>
+                            
+                            <div class="button-group">
+                                <button type="button" class="btn btn-primary" onclick="saveSupabaseConfig()">💾 Save Configuration</button>
+                                <button type="button" class="btn btn-secondary" onclick="testSupabaseConnection()">🔌 Test Connection</button>
+                                <button type="button" class="btn btn-success" onclick="initializeSupabaseTables()">🚀 Initialize Tables</button>
+                            </div>
+                        </form>
                     </div>
 
                     <div class="settings-section">
@@ -207,6 +209,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
     <!-- Load Application JavaScript -->
-    <script src="app.js?v=2.5"></script>
+    <script src="app.js?v=2.6"></script>
 </body>
 </html>
