@@ -327,7 +327,7 @@ function initializeDemoData() {
                 
                 // Update player stats
                 player.total_events++;
-                player.status = 'Active';
+                player.status = 'Previous Participant';
             }
         });
     });
@@ -736,7 +736,7 @@ function addToRoster(eventId, playerId) {
     // Update player stats
     player.total_events++;
     if (player.status === 'Prospect') {
-        player.status = 'Active';
+        player.status = 'Previous Participant';
     }
     
     saveLocalData();
