@@ -382,7 +382,7 @@ function loadInviteCandidates() {
 function updateDashboard() {
     // Update stats
     document.getElementById('total-players').textContent = players.length;
-    document.getElementById('completed-events').textContent = events.filter(e => e.status === 'Completed').length;
+    document.getElementById('completed-events').textContent = events.filter(e => e.winner_id !== null).length;
     document.getElementById('toc-qualified').textContent = players.filter(p => p.toc_qualified).length;
     document.getElementById('prospects-count').textContent = players.filter(p => p.total_events === 0).length;
     
