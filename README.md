@@ -1,12 +1,40 @@
-# AADS Series Manager
+# 💪 AADS Invite Manager
 
 **Atlantic Armwrestling Development Series Management System**
 
-A comprehensive scouting and roster management program for the AADS tournament series.
+## 🌐 **[LAUNCH WEB APP](https://dowdarts.github.io/invitemanager/)** 🌐
+
+A comprehensive scouting and roster management system for the AADS tournament series.
+
+**✨ Now Available as a Web Application! ✨**
 
 ---
 
-## 🆕 NEW: Cloud Backup with Supabase!
+## 🚀 Quick Start
+
+### Web App (Recommended)
+**No installation needed!** Just visit:
+### **[https://dowdarts.github.io/invitemanager/](https://dowdarts.github.io/invitemanager/)**
+
+- ✅ Works on any device (desktop, tablet, mobile)
+- ✅ No installation required
+- ✅ Instant access
+- ✅ Cloud sync with Supabase
+
+**[📖 Web App Guide](WEBAPP_GUIDE.md)**
+
+### Desktop App (Advanced Users)
+Traditional Python application for offline use:
+```bash
+python initialize_data.py    # One-time setup
+python aads_manager.py        # Run program
+```
+
+**[📖 Desktop Setup Guide](GETTING_STARTED.md)**
+
+---
+
+## 🌟 What's New in v2.0
 
 Your AADS data can now be backed up to the cloud! Features include:
 - ☁️ **Automatic Cloud Backup**: Never lose your tournament data
