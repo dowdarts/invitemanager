@@ -6,7 +6,7 @@
 CREATE TABLE IF NOT EXISTS players (
     id BIGINT PRIMARY KEY,
     name TEXT NOT NULL,
-    province TEXT NOT NULL CHECK (province IN ('NB', 'NS', 'PEI')),
+    province TEXT NOT NULL CHECK (province IN ('NB', 'NS', 'PEI', 'NL')),
     status TEXT NOT NULL DEFAULT 'Prospect' CHECK (status IN ('Prospect', 'Active', 'TOC Qualified')),
     total_events INTEGER NOT NULL DEFAULT 0,
     toc_qualified BOOLEAN NOT NULL DEFAULT false,

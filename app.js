@@ -262,14 +262,15 @@ function initializeDemoData() {
         { name: 'Drake Berry', province: 'NS' },
         { name: 'Jon Casey', province: 'NS' },
         { name: 'Jordan Boyd', province: 'NS' },
-        { name: 'Colby Burke', province: 'NS' },
         { name: 'Arron Gilbert', province: 'NS' },
         { name: 'Scott Ferdinand', province: 'NS' },
         // Prince Edward Island (PEI)
         { name: 'Ricky Chaisson', province: 'PEI' },
         { name: 'Mark MacEachern', province: 'PEI' },
         { name: 'Kevin Blanchard', province: 'PEI' },
-        { name: 'Corey Lefort', province: 'PEI' }
+        { name: 'Corey Lefort', province: 'PEI' },
+        // Newfoundland and Labrador (NL)
+        { name: 'Colby Burke', province: 'NL' }
     ];
     
     players = allPlayers.map((p, index) => ({
@@ -606,6 +607,7 @@ function loadEventRoster() {
                     <option value="NB">New Brunswick (NB)</option>
                     <option value="NS">Nova Scotia (NS)</option>
                     <option value="PEI">Prince Edward Island (PEI)</option>
+                    <option value="NL">Newfoundland and Labrador (NL)</option>
                 </select>
             </div>
             <div id="roster-candidates"></div>
