@@ -99,6 +99,20 @@ function saveSupabaseConfig() {
     showToast('Supabase configuration saved!', 'success');
 }
 
+function resetLocalData() {
+    if (!confirm('This will reset all local data and reload with the latest 31 players. Your cloud data will NOT be affected. Continue?')) {
+        return;
+    }
+    
+    localStorage.removeItem('aads_initialized');
+    localStorage.removeItem('aads_players');
+    localStorage.removeItem('aads_events');
+    localStorage.removeItem('aads_participants');
+    
+    showToast('Data reset! Reloading...', 'success');
+    setTimeout(() => location.reload(), 1000);
+}
+
 function initializeSupabase(url, key) {
     try {
         supabaseClient = window.supabase.createClient(url, key);
@@ -651,7 +665,7 @@ function filterRosterCandidates() {
                 </tr>
             </thead>
             <tbody>
-                ${availablePlayers.slice(0, 10).map(player => `
+                ${availablePlayers.map(player => `
                     <tr>
                         <td>${player.name}</td>
                         <td>${player.province}</td>

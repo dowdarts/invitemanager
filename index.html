@@ -152,7 +152,9 @@
                             <button class="btn btn-warning" onclick="pullFromCloud()">⬇️ Pull from Cloud</button>
                             <button class="btn btn-secondary" onclick="exportData()">📥 Export Data (JSON)</button>
                             <button class="btn btn-secondary" onclick="importData()">📤 Import Data (JSON)</button>
+                            <button class="btn btn-danger" onclick="resetLocalData()">🔄 Reset Local Data</button>
                         </div>
+                        <small>Reset reloads with all 31 players. Cloud data not affected.</small>
                     </div>
 
                     <div class="settings-section">
@@ -205,6 +207,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
     <!-- Load Application JavaScript -->
-    <script src="app.js?v=2.3"></script>
+    <script src="app.js?v=2.4"></script>
 </body>
 </html>
